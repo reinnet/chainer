@@ -16,10 +16,12 @@ package main
 import (
 	"fmt"
 	"log"
+	"math"
 	"math/rand"
 	"os"
 	"strconv"
 
+	"github.com/roadtomsc/chainer/vnf"
 	"gopkg.in/yaml.v2"
 )
 
@@ -44,19 +46,12 @@ type Config struct {
 	Chains []Chain
 }
 
-func VNFType(i int) string {
-	return []string{
-		"vIDS",
-		"vNAT",
-		"vFW",
-		"vDPI",
-	}[i]
-}
-
 func main() {
 	var cs []Chain
 
 	for i := 0; i < 100; i++ {
+		bw := math.MinInt32
+
 		c := Chain{
 			Cost:  rand.Intn(100) + 100,
 			Nodes: make([]Node, 0),
@@ -69,16 +64,24 @@ func main() {
 			ID:   "0",
 		})
 
+		// place VNF types into chain
 		for j := 1; j < l; j++ {
+			t := vnf.Get(rand.Intn(vnf.Len()))
+			if t.Capacity < bw {
+				bw = t.Capacity
+			}
 			c.Nodes = append(c.Nodes, Node{
-				Type: VNFType(rand.Intn(4)),
+				Type: t.Name,
 				ID:   strconv.Itoa(j),
 			})
+		}
 
+		// place links between VNFs
+		for j := 1; j < l; j++ {
 			c.Links = append(c.Links, Link{
 				Source:      strconv.Itoa(j - 1),
 				Destination: strconv.Itoa(j),
-				Bandwidth:   250,
+				Bandwidth:   bw,
 			})
 		}
 
