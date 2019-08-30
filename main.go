@@ -14,6 +14,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"math"
@@ -25,31 +26,38 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+// Node represents a single VNF in chain
 type Node struct {
 	Type string
 	ID   string
 }
 
+// Link connects two node on a chain
 type Link struct {
 	Source      string
 	Destination string
 	Bandwidth   int
 }
 
+// Chain is a linear form of VNFs
 type Chain struct {
 	Cost  int
 	Nodes []Node
 	Links []Link
 }
 
+// Config is a generated result of chainer
 type Config struct {
 	Chains []Chain
 }
 
 func main() {
+	var number = flag.Int("n", 100, "number of chains")
+	flag.Parse()
+
 	var cs []Chain
 
-	for i := 0; i < 100; i++ {
+	for i := 0; i < *number; i++ {
 		bw := math.MinInt32
 
 		c := Chain{
@@ -58,7 +66,9 @@ func main() {
 			Links: make([]Link, 0),
 		}
 
-		l := rand.Intn(3) + 4
+		l := rand.Intn(3) + 4 // chain length
+
+		// ingress node
 		c.Nodes = append(c.Nodes, Node{
 			Type: "ingress",
 			ID:   "0",
@@ -85,10 +95,12 @@ func main() {
 			})
 		}
 
+		// egress node
 		c.Nodes = append(c.Nodes, Node{
 			Type: "egress",
 			ID:   strconv.Itoa(l),
 		})
+
 		c.Links = append(c.Links, Link{
 			Source:      strconv.Itoa(l - 1),
 			Destination: strconv.Itoa(l),
