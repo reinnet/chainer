@@ -20,10 +20,18 @@ import (
 	"math"
 	"math/rand"
 	"os"
+	"sort"
 	"strconv"
 
 	"github.com/roadtomsc/chainer/vnf"
 	"gopkg.in/yaml.v2"
+)
+
+const (
+	// MinCost is a minimum cost per VNF instance
+	MinCost = 20
+	// MaxCost is a maximum cost per VNF instance
+	MaxCost = 30
 )
 
 // Node represents a single VNF in chain
@@ -60,13 +68,13 @@ func main() {
 	for i := 0; i < *number; i++ {
 		bw := math.MinInt32
 
+		l := rand.Intn(3) + 4 // chain length
+
 		c := Chain{
-			Cost:  rand.Intn(100) + 100,
+			Cost:  l * (rand.Intn(MaxCost-MinCost) + MinCost),
 			Nodes: make([]Node, 0),
 			Links: make([]Link, 0),
 		}
-
-		l := rand.Intn(3) + 4 // chain length
 
 		// ingress node
 		c.Nodes = append(c.Nodes, Node{
@@ -109,6 +117,12 @@ func main() {
 
 		cs = append(cs, c)
 	}
+
+	// sort chains based on their cost
+	// please note that chain cost directly related to its chain length
+	sort.Slice(cs, func(i, j int) bool {
+		return cs[i].Cost < cs[j].Cost
+	})
 
 	b, err := yaml.Marshal(Config{
 		Chains: cs,
