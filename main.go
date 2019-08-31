@@ -121,7 +121,7 @@ func main() {
 	// sort chains based on their cost
 	// please note that chain cost directly related to its chain length
 	sort.Slice(cs, func(i, j int) bool {
-		return cs[i].Cost < cs[j].Cost
+		return cs[i].Cost > cs[j].Cost
 	})
 
 	b, err := yaml.Marshal(Config{
