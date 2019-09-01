@@ -16,7 +16,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"log"
 	"math"
 	"math/rand"
 	"os"
@@ -118,30 +117,41 @@ func main() {
 		cs = append(cs, c)
 	}
 
+	if err := store(cs, "config.yaml"); err != nil {
+		fmt.Println(err)
+		return
+	}
+
 	// sort chains based on their cost
 	// please note that chain cost directly related to its chain length
 	sort.Slice(cs, func(i, j int) bool {
 		return cs[i].Cost > cs[j].Cost
 	})
 
+	if err := store(cs, "config-sorted.yaml"); err != nil {
+		fmt.Println(err)
+		return
+	}
+}
+
+// store write the configuration into given YAML file
+func store(cs []Chain, name string) error {
 	b, err := yaml.Marshal(Config{
 		Chains: cs,
 	})
 	if err != nil {
-		fmt.Println(err)
-		return
+		return err
 	}
-	f, err := os.Create("config.yaml")
+	f, err := os.Create(name)
 	if err != nil {
-		fmt.Println(err)
-		return
+		return err
 	}
 	if _, err := f.Write(b); err != nil {
-		fmt.Println(err)
-		return
+		return err
 	}
 	if err := f.Close(); err != nil {
-		return
+		return err
 	}
-	log.Println(string(b))
+
+	return nil
 }
