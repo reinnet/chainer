@@ -117,7 +117,13 @@ func main() {
 		cs = append(cs, c)
 	}
 
-	if err := store(cs, "config.yaml"); err != nil {
+	// sort chains based on their cost
+	// please note that chain cost directly related to its chain length
+	sort.Slice(cs, func(i, j int) bool {
+		return cs[i].Cost < cs[j].Cost
+	})
+
+	if err := store(cs, "config-inc.yaml"); err != nil {
 		fmt.Println(err)
 		return
 	}
@@ -128,7 +134,7 @@ func main() {
 		return cs[i].Cost > cs[j].Cost
 	})
 
-	if err := store(cs, "config-sorted.yaml"); err != nil {
+	if err := store(cs, "config-dec.yaml"); err != nil {
 		fmt.Println(err)
 		return
 	}
