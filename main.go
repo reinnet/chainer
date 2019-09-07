@@ -65,7 +65,7 @@ func main() {
 	var cs []Chain
 
 	for i := 0; i < *number; i++ {
-		bw := math.MinInt32
+		bw := math.MaxInt32
 
 		l := rand.Intn(3) + 4 // chain length
 
