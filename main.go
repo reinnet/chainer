@@ -27,10 +27,8 @@ import (
 )
 
 const (
-	// MinCost is a minimum cost per VNF instance
-	MinCost = 20
-	// MaxCost is a maximum cost per VNF instance
-	MaxCost = 30
+	// Cost is a cost per VNF instance
+	Cost = 100
 )
 
 // Node represents a single VNF in chain
@@ -70,7 +68,7 @@ func main() {
 		l := rand.Intn(3) + 4 // chain length
 
 		c := Chain{
-			Cost:  l * (rand.Intn(MaxCost-MinCost) + MinCost),
+			Cost:  l * Cost,
 			Nodes: make([]Node, 0),
 			Links: make([]Link, 0),
 		}
