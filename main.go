@@ -26,11 +26,6 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-const (
-	// Cost is a cost per VNF instance
-	Cost = 100
-)
-
 // Node represents a single VNF in chain
 type Node struct {
 	Type string
@@ -58,6 +53,7 @@ type Config struct {
 
 func main() {
 	var number = flag.Int("n", 100, "number of chains")
+	var cost = flag.Int("c", 100, "cost for each VNF instance in the chain")
 	flag.Parse()
 
 	var cs []Chain
@@ -68,7 +64,7 @@ func main() {
 		l := rand.Intn(3) + 4 // chain length
 
 		c := Chain{
-			Cost:  l * Cost,
+			Cost:  l * *cost,
 			Nodes: make([]Node, 0),
 			Links: make([]Link, 0),
 		}
