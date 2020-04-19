@@ -21,6 +21,7 @@ import (
 	"os"
 	"sort"
 	"strconv"
+	"time"
 
 	"github.com/roadtomsc/chainer/vnf"
 	"gopkg.in/yaml.v2"
@@ -52,8 +53,12 @@ type Config struct {
 }
 
 func main() {
+	rand.Seed(time.Now().Unix())
+
 	var number = flag.Int("n", 100, "number of chains")
+
 	var cost = flag.Int("c", 100, "cost for each VNF instance in the chain")
+
 	flag.Parse()
 
 	var cs []Chain
@@ -81,6 +86,7 @@ func main() {
 			if t.Capacity < bw {
 				bw = t.Capacity
 			}
+
 			c.Nodes = append(c.Nodes, Node{
 				Type: t.Name,
 				ID:   strconv.Itoa(j),
@@ -142,13 +148,16 @@ func store(cs []Chain, name string) error {
 	if err != nil {
 		return err
 	}
+
 	f, err := os.Create(name)
 	if err != nil {
 		return err
 	}
+
 	if _, err := f.Write(b); err != nil {
 		return err
 	}
+
 	if err := f.Close(); err != nil {
 		return err
 	}
