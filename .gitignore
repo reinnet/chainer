@@ -27,5 +27,4 @@
 # binary
 chainer
 # generated configuration
-config-inc.yaml
-config-dec.yaml
+chains.yaml
