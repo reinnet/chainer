@@ -1,5 +1,5 @@
-module github.com/roadtomsc/chainer
+module github.com/reinnet/chainer
 
-go 1.12
+go 1.14
 
-require gopkg.in/yaml.v2 v2.2.2
+require gopkg.in/yaml.v3 v3.0.0-20200506231410-2ff61e1afc86
