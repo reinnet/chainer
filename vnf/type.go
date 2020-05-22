@@ -1,6 +1,6 @@
 package vnf
 
-// Type is a Virtual Network Function
+// Type is a Virtual Network Function.
 type Type struct {
 	Name string
 }

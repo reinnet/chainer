@@ -6,38 +6,38 @@ import (
 	"github.com/reinnet/chainer/vnf"
 )
 
-// Node represents a single VNF in chain
+// Node represents a single VNF in a chain.
 type Node struct {
 	Type string
 }
 
-// Link connects two node on a chain
+// Link connects two nodes on a chain to eachother.
 type Link struct {
 	Source      int
 	Destination int
 	Bandwidth   int
 }
 
-// Chain is a linear form of VNFs
+// Chain is a linear sequence of VNFs.
 type Chain struct {
 	Cost  int
 	Nodes []Node
 	Links []Link
 }
 
-// Bandwidth chain's links bandwidth
+// Bandwidth chain's links bandwidth.
 const Bandwidth = 250
 
-// LengthLB is a inclusive chain's length lower bound
+// LengthLB is a inclusive chain's length lower bound.
 const LengthLB = 4
 
-// LengthUB is a exclusive chain's length upper bound
+// LengthUB is a exclusive chain's length upper bound.
 const LengthUB = 7
 
-// Cost is a per instance cost
+// Cost is a per instance cost.
 const Cost = 100
 
-// New creates a chain
+// New creates a new chain.
 func New() Chain {
 	types := vnf.Types()
 

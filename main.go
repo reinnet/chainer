@@ -25,7 +25,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// Config is a generated result of chainer
+// Config represents an array of chains.
 type Config struct {
 	Chains []chain.Chain
 }
@@ -49,7 +49,7 @@ func main() {
 	}
 }
 
-// store write the configuration into given YAML file
+// store writes the chain configuration into given YAML file.
 func store(cs []chain.Chain, name string) error {
 	b, err := yaml.Marshal(Config{
 		Chains: cs,
