@@ -1,4 +1,6 @@
 # chainer
+[![Drone (cloud)](https://img.shields.io/drone/build/reinnet/chainer.svg?style=flat-square)](https://cloud.drone.io/reinnet/chainer)
+
 ## Introduction
 Chainer generates a list of service chains with the following configuration:
 
